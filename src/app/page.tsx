@@ -1,4 +1,16 @@
-'use client';
+
+"use client";
+
+import { Suspense } from "react";
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
 
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -37,7 +49,7 @@ interface FormData {
   pincode: string;
 }
 
-export default function ConfirmOrderPage() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -366,7 +378,6 @@ export default function ConfirmOrderPage() {
   );
 }
 
-
 function LoadingSkeleton() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-surface-subdued)' }}>
@@ -475,7 +486,7 @@ function LoadingSkeleton() {
   );
 }
 
-export function ErrorScreen({ error }: { error: string | null }) {
+function ErrorScreen({ error }: { error: string | null }) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-surface-subdued)' }}>
       <div style={{ maxWidth: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
