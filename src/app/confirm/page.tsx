@@ -13,16 +13,6 @@ interface FormData {
   pincode: string;
 }
 
-
-interface FormData {
-  name: string;
-  phone: string;
-  altPhone: string;
-  address: string;
-  city: string;
-  pincode: string;
-}
-
 export default function ConfirmPage() {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
@@ -115,14 +105,16 @@ function ConfirmOrderContent() {
       }
       const prefilled = changed ? 'changed' : 'unchanged';
 
-      const webhookData = {
-        orderId: orderData?.order_id,
-        customer: formData,
-        items: orderData?.items,
-        finalAmount: orderData?.final_amount,
-        status: 'confirm',
-        prefilled
-      };
+const webhookData = {
+  orderId: orderData?.order_id,              // ✅ Supabase order_id
+  shopifyOrderId: orderData?.shopify_id,     // ✅ Add THIS
+  customer: formData,
+  items: orderData?.items,
+  finalAmount: orderData?.final_amount,
+  status: 'confirm',
+  prefilled
+};
+
 
       const response = await fetch('https://rushil-bhor.app.n8n.cloud/webhook/confirm', {
         method: 'POST',
