@@ -1,0 +1,17 @@
+{
+  "checkout_token": "57660b42b372d864df97f15bf5ebd726",
+  "orderId": "3416",
+  "customer": {
+    "name": "Rushil Bhor",
+    "phone": "+918149483065",
+    "address": "Test Test",
+    "city": "Test",
+    "pincode": "411030"
+  },
+  "items": [],
+  "totalAmount": "1999.00",
+  "shippingAmount": 0,
+  "codFee": 0,
+  "finalAmount": "1999.00",
+  "createdAt": "2025-10-28T23:22:11.215Z"
+}

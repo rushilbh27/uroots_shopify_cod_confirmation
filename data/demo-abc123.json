@@ -1,0 +1,25 @@
+{
+  "checkout_token": "demo-abc123",
+  "orderId": "ORD-DEMO-001",
+  "customer": {
+    "name": "Demo User",
+    "phone": "+91 99999 88888",
+    "address": "456 Demo Street",
+    "city": "Pune",
+    "pincode": "411001"
+  },
+  "items": [
+    {
+      "id": 1,
+      "name": "Hair Tonic",
+      "variant": "100ml",
+      "quantity": 1,
+      "price": 500
+    }
+  ],
+  "totalAmount": 500,
+  "shippingAmount": 0,
+  "codFee": 20,
+  "finalAmount": 520,
+  "createdAt": "2025-10-28T20:27:31.084Z"
+}
