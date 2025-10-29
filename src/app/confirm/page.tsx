@@ -1,45 +1,17 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
-
-interface OrderItem {
-  id: number;
-  name: string;
-  variant: string;
-  quantity: number;
-  price: number;
-  image: string;
+export default function ConfirmPage() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <ConfirmOrderContent />
+    </Suspense>
+  );
 }
 
-interface OrderData {
-  checkout_token: string;
-  order_id?: string;
-  shopify_id?: string;
-  customer_name: string;
-  phone: string;
-  address: string;
-  city: string;
-  pincode: string;
-  items: OrderItem[];
-  final_amount: number;
-  shipping_amount?: number;
-  cod_fee?: number;
-  status?: string;
-  created_at?: string;
-}
-
-interface FormData {
-  name: string;
-  phone: string;
-  altPhone: string;
-  address: string;
-  city: string;
-  pincode: string;
-}
-
-export default function ConfirmOrderPage() {
+function ConfirmOrderContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -124,15 +96,52 @@ export default function ConfirmOrderPage() {
       const prefilled = changed ? 'changed' : 'unchanged';
 
       const webhookData = {
-  orderId: orderData?.order_id,
+        orderId: orderData?.order_id,
         customer: formData,
         items: orderData?.items,
-  finalAmount: orderData?.final_amount,
+        finalAmount: orderData?.final_amount,
         status: 'confirm',
         prefilled
       };
 
       const response = await fetch('https://rushil-bhor.app.n8n.cloud/webhook/confirm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(webhookData)
+      });
+      
+      await fetch('/api/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkout_token: orderData!.checkout_token })
+      });
+
+      if (response.ok) {
+        router.push('/success');
+      } else {
+        throw new Error('Failed to confirm order');
+      }
+    } catch (err) {
+      alert('Failed to confirm order. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (error || !orderData) {
+    return <ErrorScreen error={error} />;
+  }
+
+  return (
+    ...existing code...
+  );
+}
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
