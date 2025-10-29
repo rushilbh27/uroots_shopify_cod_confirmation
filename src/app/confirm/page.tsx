@@ -2,6 +2,26 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
+import type { StoredOrder as OrderData } from '@/lib/orderStore';
+
+interface FormData {
+  name: string;
+  phone: string;
+  altPhone: string;
+  address: string;
+  city: string;
+  pincode: string;
+}
+
+
+interface FormData {
+  name: string;
+  phone: string;
+  altPhone: string;
+  address: string;
+  city: string;
+  pincode: string;
+}
 
 export default function ConfirmPage() {
   return (
@@ -113,59 +133,23 @@ function ConfirmOrderContent() {
       });
       
       await fetch('/api/confirm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ checkout_token: orderData!.checkout_token })
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ checkout_token: orderData!.checkout_token })
+});
 
-      if (response.ok) {
-        router.push('/success');
-      } else {
-        throw new Error('Failed to confirm order');
-      }
-    } catch (err) {
-      alert('Failed to confirm order. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (loading) {
-    return <LoadingSkeleton />;
-  }
-
-  if (error || !orderData) {
-    return <ErrorScreen error={error} />;
-  }
-
-  return (
-    ...existing code...
-  );
+if (response.ok) {
+  router.push('/success');
+} else {
+  throw new Error('Failed to confirm order');
 }
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(webhookData)
-      });
 
-        await fetch('/api/confirm', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ checkout_token: orderData.checkout_token })
-        });
-
-        if (response.ok) {
-          router.push('/success');
-        } else {
-          throw new Error('Failed to confirm order');
-        }
-    } catch (err) {
-      alert('Failed to confirm order. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+} catch (err) {
+  alert('Failed to confirm order. Please try again.');
+} finally {
+  setSubmitting(false);
+}
+};
 
   if (loading) {
     return <LoadingSkeleton />;
@@ -190,7 +174,6 @@ function ConfirmOrderContent() {
             boxShadow: 'var(--shadow-base)'
           }}
         >
-          
             <div className="brand-header-inner">
               {/* u.Roots Logo */}
               <img 
@@ -200,7 +183,7 @@ function ConfirmOrderContent() {
               />
               <div className="brand-title-wrap">
                 <h1 className="brand-title">Confirm your order</h1>
-                <p className="brand-subtitle">Order #{orderData.order_id}</p>
+                <p className="brand-subtitle">Order #{orderData!.order_id}</p>
               </div>
             </div>
         </div>
@@ -227,7 +210,7 @@ function ConfirmOrderContent() {
                     }}
                   >
                     <span className="text-heading-md text-subdued">Total</span>
-                    <span className="text-heading-xl" style={{ fontWeight: 800, fontSize: '1.35rem' }}>₹{orderData.final_amount.toLocaleString()}</span>
+                    <span className="text-heading-xl" style={{ fontWeight: 800, fontSize: '1.35rem' }}>₹{orderData?.final_amount ? orderData.final_amount.toLocaleString() : ''}</span>
                   </div>
                 </div>
               </div>
